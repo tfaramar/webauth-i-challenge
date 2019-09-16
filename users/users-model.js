@@ -19,9 +19,10 @@ function find() {
 function add(user) {
     return db('users')
         .insert(user, 'id')
-        .then((user) => {
-            return user;
-        })
+        .then(ids => {
+            const [id] = ids
+            return findById(id);
+        });
 };
 
 function findBy(filter) {
