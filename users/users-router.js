@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/users', restricted, (req, res) => {
-    console.log(req.session);
+    //console.log(req.session);
         Users.find()
         .then(users => {
             res.status(200).json(users)
@@ -53,14 +53,15 @@ router.post('/login', (req, res) => {
 
 router.get('/logout', (req, res) => {
     if(req.session) {
+        console.log('logout:', req.session);
         req.session.destroy(error => {
-            if(error) {
-                res.json({ message: 'Unable to log user out.' })
+            if (error) {
+                res.status(500).json({ message: 'Unable to log user out.' })
             } else {
-                console.log('logout:', req.session);
+                console.log('logged out:', req.session);
                 res.status(200).json({ message: 'User successfully logged out.' });
             }
-        })
+        });
     } else {
         res.status(200).json({ message: 'User already logged out.' });
     }
