@@ -12,7 +12,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/users', restricted, (req, res) => {
-    Users.find()
+    console.log(req.session);
+        Users.find()
         .then(users => {
             res.status(200).json(users)
         })
@@ -38,6 +39,8 @@ router.post('/login', (req, res) => {
         .first()
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
+                req.session.user = user;
+                console.log('login:', req.session);
                 res.status(200).json({ message: `Welcome ${user.username}!` });
               } else {
                 res.status(401).json({ message: 'You shall not pass!' });
@@ -48,23 +51,29 @@ router.post('/login', (req, res) => {
         });
 });
 
+router.get('/logout', (req, res) => {
+    if(req.session) {
+        req.session.destroy(error => {
+            if(error) {
+                res.json({ message: 'Unable to log user out.' })
+            } else {
+                console.log('logout:', req.session);
+                res.status(200).json({ message: 'User successfully logged out.' });
+            }
+        })
+    } else {
+        res.status(200).json({ message: 'User already logged out.' });
+    }
+});
+
 //custom middleware
 function restricted (req, res, next) {
-    const { username, password } = req.headers;
-    if (username && password) {
-      //if username/pass exist, check username, then use compareSync to verify password
-      Users.findBy({ username })
-      .first()
-      .then(user => {
-        if (user && bcrypt.compareSync(password, user.password)) {
-          next();
-        } else {
-          res.status(401).json({ message: "You shall not pass!" })
-        }
-      })
+    console.log('request:', req.session);
+    if (req.session && req.session.user) {
+      next();
     } else {
-      res.status(400).json({ message: "Please provide a username and password." })
+      res.status(401).json({ message: 'You shall not pass!' })
     }
-  }
+  };
 
 module.exports = router;
