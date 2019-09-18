@@ -1,0 +1,33 @@
+{
+  "name": "webauth-i-challenge",
+  "version": "1.0.0",
+  "description": "## Topics",
+  "main": "index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-session-knex": "^1.4.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "knex": "^0.19.4",
+    "knex-cleaner": "^1.3.0",
+    "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tfaramar/webauth-i-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tfaramar/webauth-i-challenge/issues"
+  },
+  "homepage": "https://github.com/tfaramar/webauth-i-challenge#readme"
+}
